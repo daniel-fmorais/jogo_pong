@@ -140,13 +140,13 @@ function placar () {
 function calculaChanceDeErrar() {
   if (pontosPlayer2 >= pontosPlayer1) {
     chanceDeErrar += 1
-    if (chanceDeErrar >= raqueteAltura / 2){
-    chanceDeErrar = raqueteAltura / 2
+    if (chanceDeErrar >= alturaRaquete / 2){
+    chanceDeErrar = alturaRaquete / 2
     }
   } else {
     chanceDeErrar -= 1
-    if (chanceDeErrar <= -1 * (raqueteAltura / 2)){
-    chanceDeErrar = raqueteAltura / 2
+    if (chanceDeErrar <= -1 * (alturaRaquete / 2)){
+    chanceDeErrar = alturaRaquete / 2
     }
   }
 }
