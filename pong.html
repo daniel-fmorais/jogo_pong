@@ -1,15 +1,18 @@
+Código final, Adversário dificilmente erra, bom jogo para jogar x2 e nao com computador. Feito no P5JS
+
 //Variáeis da Bolinha
 let xBolinha = 300;
 let yBolinha = 200;
 let diametro =15;
 let raio = diametro / 2;
+let chanceDeErrar = 0;
 
 let colidiu = false;
 
 //Variaveis de velocidade
-let velocidadeXBolinha = 3;
-let velocidadeYBolinha = 3;
-let velMovimentaRaqueteP1 = 5;
+let velocidadeXBolinha = 7;
+let velocidadeYBolinha = 7;
+let velMovimentaRaqueteP1 = 7;
 let velMovimentaRaqueteP2;
 
 //Variaveis das Raquetes
@@ -29,13 +32,15 @@ let raquetada;
 let ponto;
 let trilhaFundo;
 
-function preLoad() {
-
+function preload() {
+  trilha = loadSound("trilha.mp3");
+  ponto = loadSound("ponto.mp3");
+  raquetada = loadSound("raquetada.mp3");
 }
 
 function setup() {
   createCanvas(600, 400);
-  loop();
+  trilha.loop();
 }
 
 function draw() {
@@ -88,14 +93,15 @@ function movimentaRaquetePlayer1 () {
 }
 
 function movimentaRaquetePlayer2 () {
-  velMovimentaRaqueteP2 = yBolinha - yRaquetePlayer2 - (alturaRaquete / 2);
-  yRaquetePlayer2 += velMovimentaRaqueteP2;
-  //console.log(velocidade);
+  velMovimentaRaqueteP2 = yBolinha - yRaquetePlayer2 - (alturaRaquete / 2) - 30;
+  yRaquetePlayer2 += velMovimentaRaqueteP2 + chanceDeErrar;
+  calculaChanceDeErrar();
 }
 
 function colisaoRaquetePlayer1 () {
   if (xBolinha - raio < xRaquetePlayer1 + larguraRaquete && yBolinha - raio < yRaquetePlayer1 + alturaRaquete && yBolinha + raio > yRaquetePlayer1) {
     velocidadeXBolinha *= -1;
+    raquetada.play();
   }
 } 
 
@@ -104,6 +110,7 @@ function colisaoRaquetePlayer2 () {
   colidiu = collideRectCircle(xRaquetePlayer2, yRaquetePlayer2, larguraRaquete, alturaRaquete, xBolinha, yBolinha, raio)
   if (colidiu){
     velocidadeXBolinha *= -1;
+    raquetada.play();
   }
 }
 
@@ -122,8 +129,24 @@ function placar () {
   
   if (xBolinha > 591) {
     pontosPlayer1 += 1;
+    ponto.play();
   }
   if (xBolinha < 9) {
     pontosPlayer2 += 1;
+    ponto.play();
+  }
+}
+
+function calculaChanceDeErrar() {
+  if (pontosPlayer2 >= pontosPlayer1) {
+    chanceDeErrar += 1
+    if (chanceDeErrar >= raqueteAltura / 2){
+    chanceDeErrar = raqueteAltura / 2
+    }
+  } else {
+    chanceDeErrar -= 1
+    if (chanceDeErrar <= -1 * (raqueteAltura / 2)){
+    chanceDeErrar = raqueteAltura / 2
+    }
   }
 }
